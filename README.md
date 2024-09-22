@@ -24,11 +24,11 @@ subcommands:
     convert      Convert SBOM between different formats
 ```
 
-# Install
+# Installation
 
-We provide two ways for users to use SIT. The first one is to deploy locally, installing all the necessary libraries. The second one is to use docker.
+We provide two ways for users to use SIT: deploying locally by installing all necessary libraries, or using Docker.
 
-## Create a virtual environment and install necessary libraries
+## Create a Virtual Environment and Install Libraries
 
 Check your python version and pip version.
 
@@ -36,7 +36,7 @@ Check your python version and pip version.
 python3 -m pip --version
 ```
 
-Then create a virtual environment.
+Create a virtual environment.
 
 ```shell
 sudo apt install python3-venv && \  
@@ -45,7 +45,7 @@ python3 -m venv env && \
 source ./env/bin/activate
 ```
 
-Finally install all the needed libraries with requirements.txt.
+Finally install required libraries with requirements.txt.
 
 ```shell
 python3 -m pip install -r ./SIT/requirements.txt
@@ -54,7 +54,7 @@ python3 -m pip install -r ./scancode_toolkit/requirements.txt
 
 ## SIT docker
 
-Make sure you have already installed Docker. Login into Docker Hub.
+Make sure you have Docker installed. Then login to Docker Hub:
 ```shell
 docker login
 ```
@@ -68,7 +68,7 @@ docker pull gmscofield/sit:latest
 
 ## Server Mode
 
-If you want SIT to run as a server, then just invode SIT with `--server` argument to run it in server mode. By default, it listens to port `9020`.
+To run SIT as a server, invode SIT with `--server` argument. By default, it listens to port `9020`.
 
 ```shell
 python -m SIT --server
@@ -77,10 +77,9 @@ python -m SIT --server
 Or use the container image.
 
 ```shell
-docker run --rm -p 92:9020 sit --server
+docker run --rm -p 92:9020 gmscofield/sit --server
 ```
-
-`--rm` argument can remove the container image automatically after using the container.
+Note: The `--rm` argument automatically removes the container after it stops.
 
 
 ## Generate Command
@@ -109,7 +108,7 @@ python -m SIT generate -i /input/project -o /output/sbom.json --model spdx --env
 
 If you use SIT docker:
 ```shell
-docker run --rm -v /localpath/input/project:/input -v /localpath/output:/output sit generate -i /input -o /output/sbom.json --model spdx --env /input/env
+docker run --rm -v /localpath/input/project:/input -v /localpath/output:/output gmscofield/sit generate -i /input -o /output/sbom.json --model spdx --env /input/env
 ```
 
 ## Merge Command
@@ -138,12 +137,12 @@ python -m SIT merge -i /input/sbom1.json /input/sbom2.json -o /output/sbom.json 
 
 If you use SIT docker:
 ```shell
-docker run --rm -v /localpath/input:/input -v /localpath/output:/output sit merge -i /input/sbom1.json /input/sbom2.json -o /output/sbom.json --model spdx
+docker run --rm -v /localpath/input:/input -v /localpath/output:/output gmscofield/sit merge -i /input/sbom1.json /input/sbom2.json -o /output/sbom.json --model spdx
 ```
 
 ## Export Command
 
-Export a sub-SBOM from the given SBOM.
+Export a sub-SBOM from a given SBOM.
 
 ```
 Usage:
@@ -167,12 +166,12 @@ python -m SIT export -i /input/sbom.json -o /output/sbom.json --id package-id --
 
 If you use SIT docker:
 ```shell
-docker run --rm -v /localpath/input:/input -v /localpath/output:/output sit export -i /input/sbom.json -o /output/sbom.json --id package-id --model spdx
+docker run --rm -v /localpath/input:/input -v /localpath/output:/output gmscofield/sit export -i /input/sbom.json -o /output/sbom.json --id package-id --model spdx
 ```
 
 ## Convert Command
 
-Convert between different SBOM formats.
+Convert an SBOM between different SBOM formats.
 
 ```
 Usage:
@@ -195,5 +194,5 @@ python -m SIT convert -i /input/sbom.json -o /output/sbom.json --model spdx
 
 If you use SIT docker:
 ```shell
-docker run --rm -v /localpath/input:/input -v /localpath/output:/output sit convert -i /input/sbom.json -o /output/sbom.json --model spdx
+docker run --rm -v /localpath/input:/input -v /localpath/output:/output gmscofield/sit convert -i /input/sbom.json -o /output/sbom.json --model spdx
 ```
