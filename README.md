@@ -68,7 +68,7 @@ docker pull gmscofield/sit:latest
 
 ## Server Mode
 
-To run SIT as a server, invode SIT with `--server` argument. By default, it listens to port `9020`.
+To run SIT as a server, invoke SIT with `--server` argument. By default, it listens to port `9020`.
 
 ```shell
 python -m SIT --server
@@ -77,7 +77,7 @@ python -m SIT --server
 Or use the container image.
 
 ```shell
-docker run --rm -p 92:9020 gmscofield/sit --server
+docker run --rm -it -p 9020:9020 gmscofield/sit --server
 ```
 Note: The `--rm` argument automatically removes the container after it stops.
 

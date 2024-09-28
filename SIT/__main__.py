@@ -204,6 +204,8 @@ if __name__ == "__main__":
             bom = Export_SBOM(args.input, args.id).export_sbom()
         elif args.subcmd == "convert":
             bom = Convert_SBOM(args.input).convert_sbom()
+        else:
+            raise Exception("No command is provided")
         
         Util.make_output(bom, args.model, args.output)
     logging.info("Successful operation")
