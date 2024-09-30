@@ -2,7 +2,8 @@ import toml
 import json
 import os
 from typing import List, Dict
-from scancode_toolkit.src.packagedcode.pypi_setup_py import parse_setup_py
+# from scancode_toolkit.src.packagedcode.pypi_setup_py import parse_setup_py
+from packagedcode.pypi_setup_py import parse_setup_py
 import pip_requirements_parser
 from ....output import middleware
 from .utils import ALGOLIST, parse_depend, name_email_str2ind, component_meta_template, str2license, IDManager, get_imports

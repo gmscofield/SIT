@@ -5,7 +5,7 @@ import pandas as pd
 from typing import Optional, List, Tuple
 from datetime import datetime
 import logging
-from scancode_toolkit.src.scancode.api import get_licenses
+from scancode.api import get_licenses
 
 from .meta.pypi import analyze_pyproject_meta, analyze_requirements_meta, analyze_setup_meta, \
     analyze_pipfile_meta, analyze_pipfileLock_meta, analyze_pdm_meta, analyze_poetry_meta

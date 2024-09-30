@@ -1,7 +1,8 @@
 import ast
 from  typing import List, Optional
 import hashlib
-from scancode_toolkit.src.scancode.api import get_licenses, get_copyrights, get_file_info
+# from scancode_toolkit.src.scancode.api import get_licenses, get_copyrights, get_file_info
+from scancode.api import get_licenses, get_copyrights, get_file_info
 from  .utils import name_email_str2ind, IDManager
 from ....output import middleware
 
