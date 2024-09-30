@@ -1,3 +1,5 @@
+# SIT
+
 ```
        _____ _____ _______ 
       / ____|_   _|__   __|
@@ -28,41 +30,41 @@ subcommands:
 
 We provide two ways for users to use SIT: deploying locally by installing all necessary libraries, or using Docker.
 
-## Create a Virtual Environment and Install Libraries
+## Deploy locally
 
-Check your python version and pip version.
-
-```shell
-python3 -m pip --version
-```
-
-Create a virtual environment.
+We use [poetry](https://python-poetry.org/) to manage dependencies. Make sure you have poetry installed.
 
 ```shell
-sudo apt install python3-venv && \  
-python3 -m pip install --user virtualenv && \  
-python3 -m venv env && \
-source ./env/bin/activate
+pip install poetry
 ```
 
-Finally install required libraries with requirements.txt.
+Clone the repository and install the dependencies.
 
 ```shell
-python3 -m pip install -r ./SIT/requirements.txt
-python3 -m pip install -r ./scancode_toolkit/requirements.txt
+git clone 
+cd SIT
+poetry install  # install dependencies
+poetry shell  # activate the virtual environment
+python3 -m SIT --help  # check if SIT is installed successfully
 ```
 
-## SIT docker
+## Deploy with Docker
 
-Make sure you have Docker installed. Then login to Docker Hub:
-```shell
-docker login
-```
+Check the [Docker installation guide](https://docs.docker.com/get-docker/) to install Docker on your machine.
 
 Pull the docker image of SIT.
 ```shell
 docker pull gmscofield/sit:latest
 ```
+
+Run the container.
+```shell
+docker run --rm -it -p 9020:9020 \
+  -v $(pwd)/input:/input \
+  gmscofield/sit [--server] <subcommand> ...
+```
+
+The `--rm` argument automatically removes the container after it stops.
 
 # Commands
 
@@ -74,19 +76,11 @@ To run SIT as a server, invoke SIT with `--server` argument. By default, it list
 python -m SIT --server
 ```
 
-Or use the container image.
-
-```shell
-docker run --rm -it -p 9020:9020 gmscofield/sit --server
-```
-Note: The `--rm` argument automatically removes the container after it stops.
-
-
 ## Generate Command
 
 Generate an SBOM for the given Python package.
 
-```
+```shell
 Usage:
   python -m SIT generate [options]
 
@@ -115,7 +109,7 @@ docker run --rm -v /localpath/input/project:/input -v /localpath/output:/output 
 
 Merge two SBOMs.
 
-```
+```shell
 Usage:
   python -m SIT merge [options]
 
@@ -144,7 +138,7 @@ docker run --rm -v /localpath/input:/input -v /localpath/output:/output gmscofie
 
 Export a sub-SBOM from a given SBOM.
 
-```
+```shell
 Usage:
   python -m SIT export [options]
 
@@ -173,7 +167,7 @@ docker run --rm -v /localpath/input:/input -v /localpath/output:/output gmscofie
 
 Convert an SBOM between different SBOM formats.
 
-```
+```shell
 Usage:
   python -m SIT convert [options]
 
