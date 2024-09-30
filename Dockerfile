@@ -1,15 +1,14 @@
 FROM python:3.10
 
-WORKDIR /app
-
-COPY . /app
-RUN pip install --no-cache-dir -r /app/scancode_toolkit/requirements.txt
-RUN pip install --no-cache-dir -r /app/SIT/requirements.txt
-
-EXPOSE 9020
-
-# CMD ["cd", "/app/server", "python", "./server.py"]
+# Install dependencies
 WORKDIR /app/
-# CMD ["fastapi", "run", "./server.py", "--host", "127.0.0.1", "--port", "9002"]
-# CMD ["uvicorn", "run", "./server.py", "--host", "127.0.0.1", "--port", "9002"]
+RUN pip install poetry
+RUN poetry config virtualenvs.create false
+COPY pyproject.toml poetry.lock /app/
+RUN poetry install --no-dev
+
+# Copy the source code
+COPY SIT /app/SIT
+EXPOSE 9020
 ENTRYPOINT ["python", "-m", "SIT"]
+CMD [ "--server" ]

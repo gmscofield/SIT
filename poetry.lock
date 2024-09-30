@@ -2326,6 +2326,18 @@ full = ["typecode-libmagic (>=5.39.210223)"]
 testing = ["aboutcode-toolkit (>=8.0.0)", "black", "isort", "pycodestyle (>=2.8.0)", "pytest (>=6,!=7.0.0)", "pytest-xdist (>=2)", "saneyaml", "twine", "vendy"]
 
 [[package]]
+name = "typecode-libmagic"
+version = "5.39.210531"
+description = "A ScanCode path provider plugin to provide a prebuilt native libmagic binary and database."
+optional = false
+python-versions = "*"
+files = [
+    {file = "typecode_libmagic-5.39.210531-py3-none-macosx_10_14_x86_64.whl", hash = "sha256:0a6e9745e1cdceda97cdee9d5396e65ab2025a16aa79a926350715c0ba4dfb72"},
+    {file = "typecode_libmagic-5.39.210531-py3-none-manylinux1_x86_64.whl", hash = "sha256:ee001c8093dfa89a9d1fe6d9139ef9f367a1cb9af6fd02ffebf9246af994fbf7"},
+    {file = "typecode_libmagic-5.39.210531-py3-none-win_amd64.whl", hash = "sha256:24ceecb5c1249ddbdb6a471a0d35fbc11008cbd3b71cad0966f94ff94918a1fa"},
+]
+
+[[package]]
 name = "typer"
 version = "0.12.5"
 description = "Typer, build great CLIs. Easy to code. Based on Python type hints."
@@ -2735,4 +2747,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "c0bf09960731019b8ca5847c767ea3ce82478419a48732952834afb2c4a4f7c7"
+content-hash = "f721738ae734dfe0f501a19861f386e37b8a49eb25089cdff2fb7c083d5e87b1"
