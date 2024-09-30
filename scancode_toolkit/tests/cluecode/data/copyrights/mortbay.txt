@@ -1,4 +1,0 @@
-copyrights for
-the package.  Mort Bay Consulting Pty. Ltd. (Australia) is the "Copyright Holder" for
-the Jetty package.
-

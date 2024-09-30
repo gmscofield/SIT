@@ -1,3 +1,0 @@
-... don’t fit into your fixed-size buffer.
-Byten ( c )
-Exactly n bytes. If the

@@ -1,1 +1,0 @@
-Nat224.isZero(c) || Nat224.isOne(c))

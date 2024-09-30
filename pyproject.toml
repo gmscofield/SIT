@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "sit"
+version = "0.1.0"
+description = "Generate Software Bill of Materials (SBOM) for a software package"
+authors = ["gmscofield <mscofield2020@163.com>"]
+license = "MulanPSL2"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+packageurl-python = "^0.15.6"
+pip-requirements-parser = "^32.0.1"
+pyyaml = "^6.0.2"
+requests = "^2.32.3"
+jinja2 = "^3.1.4"
+toml = "^0.10.2"
+pandas = "^2.2.3"
+validators = "^0.34.0"
+pydantic = "^2.9.2"
+typing-extensions = "^4.12.2"
+email-validator = "^2.2.0"
+fastapi = {extras = ["standard"], version = "^0.115.0"}
+scancode-toolkit-mini = "^32.2.1"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.11.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

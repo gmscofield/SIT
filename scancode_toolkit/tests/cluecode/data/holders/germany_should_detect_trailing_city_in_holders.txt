@@ -1,4 +1,0 @@
-
-         * Copyright (C) 2011
-         * Bardenheuer GmbH, Munich and Bundesdruckerei GmbH, Berlin
-        

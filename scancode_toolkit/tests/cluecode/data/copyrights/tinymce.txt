@@ -1,4 +1,0 @@
-                hideMenu : function(c) {
-                        var t = this, co = DOM.get('menu_' + t.id), e;
-
-

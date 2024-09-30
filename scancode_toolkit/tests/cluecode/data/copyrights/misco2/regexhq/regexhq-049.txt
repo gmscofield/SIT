@@ -1,1 +1,0 @@
-Copyright (C) 2011 Arpad Borsos <arpad.borsos@googlemail.com>

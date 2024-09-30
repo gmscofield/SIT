@@ -1,1 +1,0 @@
-Copyright 2011 The Closure Compiler Authors. All rights reserved.

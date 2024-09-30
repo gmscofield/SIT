@@ -1,7 +1,0 @@
-[
-  {
-    "WIN_BASE": "`dirname",
-    "UNIX_BASE": "`cygpath"
-  },
-  []
-]

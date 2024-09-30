@@ -1,9 +1,0 @@
-{
-  "headers": [{"tool_name": "scancode-toolkit"}],
-  "files": [
-    {
-      "path": "apache-2.0.LICENSE",
-      "type": "file"
-    }
-  ]
-}

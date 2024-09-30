@@ -1,2 +1,0 @@
- authors = [new Author (name: "Guillaume"), new Author (name: "Jochen"), new Author (name: "Paul")]
-

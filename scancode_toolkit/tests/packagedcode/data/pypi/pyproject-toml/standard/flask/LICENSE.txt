@@ -1,3 +1,0 @@
-Copyright 2010 Pallets
-
-license: bsd-new

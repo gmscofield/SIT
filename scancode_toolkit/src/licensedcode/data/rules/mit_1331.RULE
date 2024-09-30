@@ -1,8 +1,0 @@
----
-license_expression: mit
-is_license_notice: yes
-ignorable_urls:
-    - https://opensource.org/licenses/MIT
----
-
-{{@license MIT}} <https://opensource.org/licenses/MIT>

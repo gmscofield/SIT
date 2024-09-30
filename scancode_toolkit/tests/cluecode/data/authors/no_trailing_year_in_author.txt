@@ -1,1 +1,0 @@
-author: Theo de Raadt (1995-1999)

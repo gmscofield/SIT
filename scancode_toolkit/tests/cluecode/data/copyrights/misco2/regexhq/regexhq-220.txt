@@ -1,1 +1,0 @@
-php.js is copyright 2011 Kevin van Zonneveld.

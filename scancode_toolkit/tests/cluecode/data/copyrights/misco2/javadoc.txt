@@ -1,5 +1,0 @@
-
- @version 1.0.0
- @author (c) 2020 Jim Mason <jmason@ibinx.com>
- @license https://creativecommons.org/licenses/by-sa/4.0  CC BY-SA 4.0
-

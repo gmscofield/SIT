@@ -1,3 +1,0 @@
-<h3>Values are created by Guice</h3>
-Returned factories use child injectors
-

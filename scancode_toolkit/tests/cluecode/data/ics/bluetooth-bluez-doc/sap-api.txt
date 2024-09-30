@@ -1,5 +1,0 @@
-BlueZ D-Bus Sim Access Profile API description
-***********************************
-
-Copyright (C) 2010 ST-Ericsson SA
-

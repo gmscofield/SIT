@@ -1,3 +1,0 @@
-under a BSD-style copyright
-
- Keyspan USB Async Message Formats for the USA28X

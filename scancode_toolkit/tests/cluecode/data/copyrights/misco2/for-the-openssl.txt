@@ -1,2 +1,0 @@
-Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-project.

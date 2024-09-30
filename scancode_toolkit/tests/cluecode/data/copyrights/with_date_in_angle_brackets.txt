@@ -1,4 +1,0 @@
-
-         * Copyright (C) <2013>, GENIVI Alliance, Inc.
-         * Author: bj@open-rnd.pl
-        

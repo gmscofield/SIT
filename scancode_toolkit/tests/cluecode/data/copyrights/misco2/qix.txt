@@ -1,3 +1,0 @@
-   "author": "Qix (http://github.com/qix-)",
-   "keywords": [
-

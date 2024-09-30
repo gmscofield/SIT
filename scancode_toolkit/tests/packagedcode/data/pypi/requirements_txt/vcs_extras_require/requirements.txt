@@ -1,1 +1,0 @@
-git+https://git.myproject.org/MyProject.git@v0.1#egg=MyProject[security]

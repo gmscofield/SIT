@@ -1,3 +1,0 @@
-SPDX-license-identifier: (GPL-2.0-ONLY OR MIT
-SPDX-license-identifier: GPL-2.0-ONLY OR MIT)
-SPDX-license-identifier: (GPL-2.0-ONLY OR (MIT)

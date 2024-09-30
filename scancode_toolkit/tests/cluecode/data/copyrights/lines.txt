@@ -1,6 +1,0 @@
-Files: src/macos/src/macos_main.cpp
-Copyright: 2001, Eric Lavigne
-License: curl
-
-Files: docs/examples/rtsp.c
-Copyright: 2011, Jim Hollinger

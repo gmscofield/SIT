@@ -1,2 +1,0 @@
-* The libidn code is copyright Simon Josefsson, with portions copyright
-  The Internet Society, Tom Tromey and Red Hat, Inc.:

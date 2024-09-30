@@ -1,4 +1,0 @@
-target = "src/licensedcode/_vendor/"
-packages = [
-    "attrs==21.4.0",
-]

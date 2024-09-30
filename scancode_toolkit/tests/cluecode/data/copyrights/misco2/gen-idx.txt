@@ -1,2 +1,0 @@
-/ This regex comes from regex.coffee, and is inserted here by generate-index.js
-

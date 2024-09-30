@@ -1,2 +1,0 @@
-The SPI is defined by org.hibernate.loader.plan.spi.
-
