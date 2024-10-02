@@ -106,29 +106,33 @@ class Merge_SBOM:
         # 从root树中删除所有sub子树相关的依赖关系
         # sub_tree_nodes记录root树中所有以sub树根节点为树根的子树中所包含的节点
         sub_tree_nodes = set()
-        for sub_root_node in sub_root:
-            comp_node = sub2root_comp[sub_compID_list.index(sub_root_node)]
-            if not comp_node:
-                continue
-            que = [(comp_node, root_dep.get(comp_node, []))]
-            while que:
-                cur = que.pop(0)
-                sub_tree_nodes.add(cur[0])
-                for node in cur[1]:
-                    sub_tree_nodes.add(node)
-                
-                remove_rels = []
-                for rel in relations:
-                    if rel.type == "DEPENDS_ON":
-                        if rel.sourceID == cur[0] and rel.targetID in cur[1]:
-                            remove_rels.append(rel)
-                    elif rel.type == "DEPENDENCY_OF":
-                        if rel.targetID == cur[0] and rel.sourceID in cur[1]:
-                            remove_rels.append(rel)
-                for rel in remove_rels:
-                    relations.remove(rel)
-                que.extend([(comp, root_dep.get(comp, [])) for comp in cur[1]])
-        
+        if sub_root:
+            for sub_root_node in sub_root:
+                comp_node = sub2root_comp[sub_compID_list.index(sub_root_node)]
+                if not comp_node:
+                    continue
+                que = [(comp_node, root_dep.get(comp_node, []))]
+                while que:
+                    cur = que.pop(0)
+                    sub_tree_nodes.add(cur[0])
+
+                    remove_rels = []
+                    for rel in relations:
+                        if rel.type == "DEPENDS_ON":
+                            if rel.sourceID == cur[0] and rel.targetID in cur[1]:
+                                remove_rels.append(rel)
+                        elif rel.type == "DEPENDENCY_OF":
+                            if rel.targetID == cur[0] and rel.sourceID in cur[1]:
+                                remove_rels.append(rel)
+                    for rel in remove_rels:
+                        relations.remove(rel)
+                    for comp in cur[1]:
+                        if comp in sub_tree_nodes:
+                            continue
+                        else:
+                            sub_tree_nodes.add(comp)
+                            que.append((comp, root_dep.get(comp, [])))
+            
         # 删除只存在于旧sub树中的节点
         # 为什么要分1、2、0？
         # 0表示孤悬节点，可以直接删除；1表示只在依赖树中出现过；2表示在其他关系中出现过，不可以随便删除
@@ -172,9 +176,10 @@ class Merge_SBOM:
         # 将sub树中的节点加入到root树中
         for i, comp_id in enumerate(sub2root_comp):
             if not comp_id:
-                continue
-            sub_comp_id = sub_compID_list[i]
-            components.append(sub_comps[sub_comp_id])
+                components.append(sub_midware.components[i])
+            else:
+                sub_comp_id = sub_compID_list[i]
+                components.append(sub_comps[sub_comp_id])
         
         # 重新构建依赖关系
         for rel in relations:
@@ -184,14 +189,15 @@ class Merge_SBOM:
                 if rel.targetID == node:
                     rel.targetID = sub_compID_list[sub2root_comp.index(node)]
         
-        for rel in sub_midware.relationship:
-            flag = False
-            for root_rel in relations:
-                if rel.type == root_rel.type and rel.sourceID == root_rel.sourceID and rel.targetID == root_rel.targetID:
-                    flag = True
-                    break
-            if not flag:
-                relations.append(rel)
+        if sub_midware.relationship:
+            for rel in sub_midware.relationship:
+                flag = False
+                for root_rel in relations:
+                    if rel.type == root_rel.type and rel.sourceID == root_rel.sourceID and rel.targetID == root_rel.targetID:
+                        flag = True
+                        break
+                if not flag:
+                    relations.append(rel)
         
         root_midware.components = components
         root_midware.relationship = relations

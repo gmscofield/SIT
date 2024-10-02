@@ -162,9 +162,16 @@ class Cdx2Middleware:
                     doc_namespace = prop.value
                 elif prop.name == "licenseListVersion":
                     license_list_version = prop.value
+                else:
+                    properties.append(
+                        Extension(
+                            key=prop.name,
+                            value=prop.value
+                        )
+                    )
         
         midware = Middleware(
-            doc_ID=bom.serialNumber,
+            doc_ID=check_ID(bom.serialNumber),
             bom_version=bom.version,
             doc_name=f"SBOM for {bom.serialNumber}",
             doc_namespace=doc_namespace,
@@ -604,7 +611,7 @@ class Middleware2Cdx:
         bom = cdx_model.CyclonedxBillOfMaterialsStandard(
             bomFormat=cdx_model.BomFormat.CycloneDX,
             specVersion="1.6",
-            serialNumber=self.check_ID(self.midware.doc_ID),
+            serialNumber=check_ID(self.midware.doc_ID),
             version=self.midware.bom_version,
         )
         lfc = []
@@ -691,6 +698,7 @@ class Middleware2Cdx:
         depend_dic = {}
         dependencies = []
         properties = []
+        remove_rels = []
         if self.midware.relationship:
             for rel in self.midware.relationship:
                 if rel.type == "DEPENDS_ON":
@@ -749,6 +757,7 @@ class Middleware2Cdx:
                     if not source_comp.components:
                         source_comp.components = []
                     source_comp.components.append(target_comp)
+                    remove_rels.append(target_comp)
                 else:
                     rel_value = f"{rel.sourceID} is {rel.type} of {rel.targetID}"
                     if rel.comment:
@@ -759,6 +768,9 @@ class Middleware2Cdx:
                             value=rel_value
                         )
                     )
+        
+        for rel in remove_rels:
+            bom_comps.remove(rel)
         
         for source, target in depend_dic.items():
             dependencies.append(
@@ -795,20 +807,32 @@ class Middleware2Cdx:
                             cdx_ent = self.individual2entity_contact(ent)
                             if ent.type == "organization":
                                 if not annotator:
-                                    annotator = cdx_model.Annotator()
-                                annotator.organization = cdx_ent
+                                    annotator = cdx_model.Annotator(
+                                        organization=cdx_ent
+                                    )
+                                else:
+                                    annotator.organization = cdx_ent
                             elif ent.type == "person":
                                 if not annotator:
-                                    annotator = cdx_model.Annotator1()
-                                annotator.individual = cdx_ent
+                                    annotator = cdx_model.Annotator1(
+                                        individual=cdx_ent
+                                    )
+                                else:
+                                    annotator.individual = cdx_ent
                         elif isinstance(ent, Component):
                             if not annotator:
-                                annotator = cdx_model.Annotator2()
-                            annotator.component = self.component_mid2cdx(ent)
+                                annotator = cdx_model.Annotator2(
+                                    component=self.component_mid2cdx(ent)
+                                )
+                            else:
+                                annotator.component = self.component_mid2cdx(ent)
                         elif isinstance(ent, Service):
                             if not annotator:
-                                annotator = cdx_model.Annotator3()
-                            annotator.service = self.service_mid2cdx(ent)
+                                annotator = cdx_model.Annotator3(
+                                    service=self.service_mid2cdx(ent)
+                                )
+                            else:
+                                annotator.service = self.service_mid2cdx(ent)
                 
                 annotations.append(
                     cdx_model.Annotations(
@@ -840,16 +864,7 @@ class Middleware2Cdx:
         bom.signature = self.signature_mid2cdx(self.midware.signature)
         return bom.model_dump(mode='json', by_alias=True, exclude_none=True)
 
-    def check_ID(self, ID: Optional[str]) -> Optional[str]:
-        if ID:
-            pattern = "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
-            match = re.match(pattern, ID)
-            if match is not None:
-                return ID
-            else:
-                return f"urn:uuid:{uuid4()}"
-        else:
-            return f"urn:uuid:{uuid4()}"
+
     
     def hash_mid2cdx(self, hashes: Optional[List[Hash]]) -> Optional[List[cdx_model.Hash]]:
         if not hashes:
@@ -1133,7 +1148,7 @@ class Middleware2Cdx:
             if lic.spdxID in [member.value for member in cdx_model.spdx.Schema]:
                 root_license = cdx_model.License1(
                     id=cdx_model.spdx.Schema(lic.spdxID),
-                    name=lic_name,
+                    name=lic_name if lic_name else None,
                     bom_ref=lic_ref,
                     acknowledgement=cdx_model.LicenseAcknowledgementEnumeration(lic.type) if lic.type in [member.value for member in cdx_model.LicenseAcknowledgementEnumeration] else None,
                     text=text,
@@ -1148,7 +1163,8 @@ class Middleware2Cdx:
                         )
                     )
                 )
-            elif lic.spdxID:
+            elif lic.spdxID and \
+                ("AND" in lic.spdxID or "OR" in lic.spdxID or "WITH" in lic.spdxID):
                 bom_license.append(
                     cdx_model.LicenseChoiceItem1(
                         expression=lic.spdxID,
@@ -1159,6 +1175,15 @@ class Middleware2Cdx:
                 break
             # License2
             else:
+                if lic_name and lic.spdxID:
+                    lic_properties.append(
+                        cdx_model.Property(
+                            name="spdxID",
+                            value=lic.spdxID
+                        )
+                    )
+                elif lic.spdxID and not lic_name:
+                    lic_name = lic.spdxID
                 root_license = cdx_model.License2(
                     name=lic_name,
                     bom_ref=lic_ref,
@@ -1166,7 +1191,7 @@ class Middleware2Cdx:
                     text=text,
                     url=url,
                     licensing=licensing,
-                    properties=lic_properties  if lic_properties else None
+                    properties=lic_properties if lic_properties else None
                 )
                 bom_license.append(
                     cdx_model.LicenseChoiceItem(
@@ -1439,6 +1464,17 @@ def is_valid_purl(purl: Optional[str]) -> bool:
     )
     match = purl_regex.match(purl)
     return match is not None
+
+def check_ID(ID: Optional[str]) -> Optional[str]:
+    if ID:
+        pattern = "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        match = re.match(pattern, ID)
+        if match is not None:
+            return ID
+        else:
+            return f"urn:uuid:{uuid4()}"
+    else:
+        return f"urn:uuid:{uuid4()}"
 
 if __name__ == '__main__':
     examples = [

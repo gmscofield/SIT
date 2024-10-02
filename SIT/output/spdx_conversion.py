@@ -3,6 +3,7 @@
 
 import re
 from typing import Union, List, Optional
+import copy
 from .middleware import Middleware, Component, Service, CrossRef, Text, Relationship, Hash, Annotation, License, Individual, Extension, ExternalReference, SnippetPointer, SnippetScope
 from ..schema import spdx_model
 from ..schema.cdx_model.spdx import Schema
@@ -180,8 +181,10 @@ class Spdx2Middleware:
                 
                 licenses = []
                 if pkg.licenseConcluded:
-                    license_concluded = license_dict.get(pkg.licenseConcluded)
-                    if not license_concluded:
+                    # license_concluded = license_dict.get(pkg.licenseConcluded)
+                    if license_dict.get(pkg.licenseConcluded):
+                        license_concluded = copy.deepcopy(license_dict.get(pkg.licenseConcluded))
+                    else:
                         license_concluded = self.make_License_object(pkg.licenseConcluded)
                     license_concluded.type = "concluded"
                     lic_properties = []
@@ -205,8 +208,9 @@ class Spdx2Middleware:
                     licenses.append(license_concluded)
                 
                 if pkg.licenseDeclared:
-                    license_declared = license_dict.get(pkg.licenseDeclared)
-                    if not license_declared:
+                    if license_dict.get(pkg.licenseDeclared):
+                        license_declared = copy.deepcopy(license_dict.get(pkg.licenseDeclared))
+                    else:
                         license_declared = self.make_License_object(pkg.licenseDeclared)
                     license_declared.type = "declared"
                     licenses.append(license_declared)
@@ -478,7 +482,7 @@ class Spdx2Middleware:
                                 type=anno.annotationType.value if anno.annotationType else "OTHER",
                                 subjects=[file.SPDXID],
                                 timestamp=anno.annotationDate,
-                                annotator=Spdx2Middleware.make_ind_or_comp_object(anno.annotator) if anno.annotator else None,
+                                annotator=[Spdx2Middleware.make_ind_or_comp_object(anno.annotator)] if anno.annotator else None,
                                 text=anno.comment
                             )
                         )
@@ -1191,6 +1195,13 @@ class Middleware2Spdx:
                 checksums.append(
                     spdx_model.Checksum(
                         algorithm=spdx_model.Algorithm(cs.alg.upper().replace("_", "-")),
+                        checksumValue=cs.value
+                    )
+                )
+            elif cs.alg.upper().replace("-", "") in [member.value for member in spdx_model.Algorithm]:
+                checksums.append(
+                    spdx_model.Checksum(
+                        algorithm=spdx_model.Algorithm(cs.alg.upper().replace("-", "")),
                         checksumValue=cs.value
                     )
                 )

@@ -35,20 +35,21 @@ class Export_SBOM:
             comp_que.extend(deps)
             exported_comps.update(deps)
         
-        for rel in midware.relationship:
-            if rel.type == "DEPENDS_ON" or rel.type == "DEPENDENCY_OF":
-                if rel.sourceID in exported_comps and rel.targetID in exported_comps:
-                    exported_rels.append(rel)
-            else:
-                if rel.type in Util.SOURCE2TARGET:
-                    if rel.sourceID in exported_comps:
-                        exported_comps.add(rel.targetID)
+        if midware.relationship:
+            for rel in midware.relationship:
+                if rel.type == "DEPENDS_ON" or rel.type == "DEPENDENCY_OF":
+                    if rel.sourceID in exported_comps and rel.targetID in exported_comps:
                         exported_rels.append(rel)
-                elif rel.type in Util.TARGET2SOURCE:
-                    if rel.targetID in exported_comps:
-                        exported_comps.add(rel.sourceID)
-                        exported_rels.append(rel)
-        
+                else:
+                    if rel.type in Util.SOURCE2TARGET:
+                        if rel.sourceID in exported_comps:
+                            exported_comps.add(rel.targetID)
+                            exported_rels.append(rel)
+                    elif rel.type in Util.TARGET2SOURCE:
+                        if rel.targetID in exported_comps:
+                            exported_comps.add(rel.sourceID)
+                            exported_rels.append(rel)
+            
         midware.components = [comp for comp in midware.components if comp.ID in exported_comps]
         midware.relationship = exported_rels
         

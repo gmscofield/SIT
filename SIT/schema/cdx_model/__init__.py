@@ -4693,7 +4693,7 @@ class Annotations(BaseModel):
         description="An optional identifier which can be used to reference the annotation elsewhere in the BOM. Every bom-ref MUST be unique within the BOM.\nValue SHOULD not start with the BOM-Link intro 'urn:cdx:' to avoid conflicts with BOM-Links.",
         title='BOM Reference',
     )
-    subjects: List[Union[RefLinkType, BomLinkElementType]] = Field(
+    subjects: Optional[List[Union[RefLinkType, BomLinkElementType]]] = Field(
         ...,
         description='The object in the BOM identified by its bom-ref. This is often a component or service, but may be any object type supporting bom-refs.',
         title='Subjects',

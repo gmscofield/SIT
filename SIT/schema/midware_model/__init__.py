@@ -785,7 +785,7 @@ class Annotation(BaseModel):
         description='The identifier of the annotation',
         title='ID',
     )
-    subjects: List[str] = Field(
+    subjects: Optional[List[str]] = Field(
         ...,
         description='The subjects of the annotation',
         title='Subjects',
