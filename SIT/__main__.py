@@ -190,6 +190,10 @@ if __name__ == "__main__":
     
     # print(args.format)
     # print(args.tree)
+    logging.basicConfig(
+        format='%(asctime)s - %(levelname)s: %(message)s',
+        level=logging.INFO
+    )
     
     if args.server:
         import uvicorn
@@ -208,7 +212,7 @@ if __name__ == "__main__":
             raise Exception("No command is provided")
         
         Util.make_output(bom, args.model, args.output)
-    logging.info("Successful operation")
+    logging.info("Successful Operation!")
 
 
 # python -m SIT generate -i E:\\code\\SIT\\example\\cyclonedx-python -o E:\\code\\SIT\\result\\sbom.json -f json -l 1
